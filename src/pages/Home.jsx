@@ -53,53 +53,62 @@ export default function Home(){
   }
 
   return (
-    <section className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 min-h-[85vh]">
+    <section className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 min-h-[85vh] px-6">
       {/* Foto Profil */}
-      <div className="relative group">
-        {/* Efek binar bergerak */}
-        <div className="absolute inset-0 rounded-full animate-spin-slow bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 blur-md opacity-70 group-hover:opacity-100 transition-opacity"></div>
-
-        {/* Border + foto */}
-        <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full p-[3px] bg-gradient-to-br from-indigo-500 to-purple-600 shadow-xl overflow-hidden">
-          <div className="w-full h-full rounded-full overflow-hidden bg-[#0f172a]">
-            {profile?.photo ? (
-              <img src={profile.photo} alt="profile" className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-400">No photo</div>
-            )}
+      <div className="relative group flex-shrink-0">
+        {/* subtle glowing / float wrapper */}
+        <div className="glow-wrap">
+          <div className="relative w-56 h-56 md:w-64 md:h-64 rounded-full p-[4px] gradient-border overflow-hidden shadow-2xl">
+            <div className="w-full h-full rounded-full overflow-hidden bg-[#0f172a]">
+              {profile?.photo ? (
+                <img src={profile.photo} alt="profile" className="w-full h-full object-cover profile-float" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400 text-lg">No photo</div>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Informasi Profil */}
-      <div className="text-center md:text-left max-w-xl">
+      <div className="text-center md:text-left max-w-2xl">
         {!editing ? (
           <>
-            <h1 className="text-4xl md:text-5xl font-bold">{profile?.name || 'Nama Kamu'}</h1>
-            <p className="text-indigo-300 mt-1 text-lg md:text-xl">{profile?.title || 'Frontend Developer'}</p>
-            <p className="mt-4 text-gray-300 leading-relaxed">
+            <h1 className="text-5xl md:text-6xl font-extrabold leading-tight animate-fade-up" style={{animationDelay: '0.12s'}}>
+              {profile?.name || 'Nama Kamu'}
+            </h1>
+
+            <p className="text-indigo-300 mt-2 text-xl md:text-2xl font-medium animate-fade-up" style={{animationDelay: '0.24s'}}>
+              {profile?.title || 'Frontend Developer'}
+            </p>
+
+            <p className="mt-5 text-gray-300 leading-relaxed text-lg md:text-xl animate-fade-up" style={{animationDelay: '0.36s'}}>
               {profile?.shortBio || 'Tambahkan deskripsi singkat tentang dirimu di halaman ini.'}
             </p>
 
             {isAdmin && (
-              <div className="mt-5 flex flex-col md:flex-row items-center gap-3 md:justify-start justify-center">
-                <button onClick={()=>setEditing(true)} className="px-5 py-2 bg-indigo-600 rounded">Edit Profile</button>
-                <label className="text-sm text-gray-300 cursor-pointer">
-                  Ganti Foto
+              <div className="mt-6 flex flex-col md:flex-row items-center gap-3 md:justify-start justify-center animate-fade-up" style={{animationDelay: '0.48s'}}>
+                <button onClick={()=>setEditing(true)} className="px-6 py-3 bg-indigo-600 rounded-lg text-sm md:text-base shadow-lg transform hover:-translate-y-0.5 transition">
+                  Edit Profile
+                </button>
+
+                <label className="text-sm text-gray-300 cursor-pointer flex items-center gap-2">
+                  <span className="underline">Ganti Foto</span>
                   <input type="file" accept="image/*" onChange={onFile} className="hidden" />
                 </label>
+
                 {loading && <div className="text-sm text-gray-400">Uploading...</div>}
               </div>
             )}
           </>
         ) : (
-          <div className="flex flex-col gap-3 w-full">
-            <input className="p-2 rounded bg-[#071024]" value={name} onChange={e=>setName(e.target.value)} placeholder="Nama" />
-            <input className="p-2 rounded bg-[#071024]" value={title} onChange={e=>setTitle(e.target.value)} placeholder="Title" />
-            <textarea className="p-2 rounded bg-[#071024]" value={shortBio} onChange={e=>setShortBio(e.target.value)} placeholder="Deskripsi singkat" />
-            <div className="flex gap-2 justify-center md:justify-start mt-3">
-              <button onClick={save} className="px-4 py-2 bg-green-600 rounded">Simpan</button>
-              <button onClick={()=>setEditing(false)} className="px-4 py-2 border rounded">Batal</button>
+          <div className="flex flex-col gap-3 w-full max-w-lg animate-fade-up" style={{animationDelay: '0.12s'}}>
+            <input className="p-3 rounded bg-[#071024]" value={name} onChange={e=>setName(e.target.value)} placeholder="Nama" />
+            <input className="p-3 rounded bg-[#071024]" value={title} onChange={e=>setTitle(e.target.value)} placeholder="Title" />
+            <textarea className="p-3 rounded bg-[#071024]" value={shortBio} onChange={e=>setShortBio(e.target.value)} placeholder="Deskripsi singkat" rows={4} />
+            <div className="flex gap-3 justify-center md:justify-start mt-3">
+              <button onClick={save} className="px-5 py-2 bg-green-600 rounded-lg">Simpan</button>
+              <button onClick={()=>setEditing(false)} className="px-5 py-2 border rounded-lg">Batal</button>
             </div>
           </div>
         )}
